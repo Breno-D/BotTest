@@ -5,7 +5,7 @@ GWL_EXSTYLE = -20
 WS_EX_LAYERED = 0x00080000
 LWA_ALPHA = 0x00000002
 
-OPACITY = 255 
+OPACITY = 1 
 WINDOW_TITLE = "Tibia - Heria Nira"
 target_window = gw.getWindowsWithTitle(WINDOW_TITLE)[0]
 
