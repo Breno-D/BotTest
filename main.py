@@ -6,6 +6,16 @@ pg.useImageNotFoundException()
 REGION_BATTLE = (1193, 413, 172, 55)
 REGION_LOOT = (499, 231, 138, 137)
 
+POSITION_MANA = (600, 32)
+COLOR_MANA = (0, 63, 140)
+
+POSITION_LIFE = (190, 33)
+COLOR_LIFE_SAFE = (109, 157, 4)
+# 100 145 4
+# COLOR_LIFE_DANGER
+#COLOR_LIFE_CRITICAL
+
+
 # desabilita UI tibia, para fins de claridade visual do bot
 # pg.hotkey('ctrl', 'n')
 
@@ -46,4 +56,21 @@ def get_loot_old():
 def get_loot():
     pg.hotkey('alt', 'q')
 
-kill_monsters()
+
+def check_status(delay, mousePosX, mousePosY, colorToMatch, buttonToPress):
+    pg.sleep(delay)
+    if(pg.pixelMatchesColor(mousePosX, mousePosY, colorToMatch)):
+        pg.press(buttonToPress)
+        print("match")
+    else:
+        print("no match")
+
+def eat_food():
+    pg.press("F6")
+    print("comendo food...")
+
+
+
+# pg.displayMousePosition()
+# check_status(5, *POSITION_MANA, COLOR_MANA , 'F3')
+# check_status(1, *POSITION_LIFE, COLOR_LIFE_SAFE, 'F3')
