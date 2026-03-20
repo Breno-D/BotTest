@@ -11,9 +11,8 @@ COLOR_MANA = (0, 63, 140)
 
 POSITION_LIFE = (190, 33)
 COLOR_LIFE_SAFE = (109, 157, 4)
-# 100 145 4
-# COLOR_LIFE_DANGER
-#COLOR_LIFE_CRITICAL
+# COLOR_LIFE_DANGER =
+# COLOR_LIFE_CRITICAL =
 
 
 # desabilita UI tibia, para fins de claridade visual do bot
@@ -21,10 +20,6 @@ COLOR_LIFE_SAFE = (109, 157, 4)
 
 def check_battle():
     return pg.locateOnScreen("imgs/region_battle.PNG", region=REGION_BATTLE)
-
-# time.sleep(2)
-# battle = check_battle()
-# print(battle)
 
 def kill_monsters():
     while True:
@@ -69,8 +64,32 @@ def eat_food():
     pg.press("F6")
     print("comendo food...")
 
+def hole_down():
+    try:
+        hole = pg.locateOnScreen("imgs/holeImg.PNG", confidence=0.8) # trocar imagem de buraco depois
+        x, y = pg.center(hole)
+        pg.moveTo(x, y)
+        pg.click()
+        pg.sleep(5)
+    except pg.ImageNotFoundException:
+        print("buraco não encontrado")
+
+def hole_up(img_anchor, plusx, plusy):
+    try:
+        anchorToUp = pg.locateOnScreen(img_anchor, confidence=0.8)
+        x,y = pg.center(anchorToUp)
+        pg.moveTo(x + plusx, y + plusy)
+        pg.press("F11")
+        pg.click()
+    except pg.ImageNotFoundException:
+        print("ancora não encontrada")
+
+keyboard.wait('h')
+hole_up("imgs/anchorTest.PNG", 65, 65)
 
 
-# pg.displayMousePosition()
+
 # check_status(5, *POSITION_MANA, COLOR_MANA , 'F3')
 # check_status(1, *POSITION_LIFE, COLOR_LIFE_SAFE, 'F3')
+
+#testes : pg.displayMousePosition()
