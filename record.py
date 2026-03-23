@@ -3,13 +3,12 @@ from pynput.keyboard import Listener
 from pynput import keyboard
 import json
 import os
-
-FOLDER_NAME = "HUNT_TEST"
+import constants
 
 
 def create_folder():
-    if not os.path.isdir(FOLDER_NAME):
-        os.mkdir(FOLDER_NAME)
+    if not os.path.isdir(constants.FOLDER_NAME):
+        os.mkdir(constants.FOLDER_NAME)
 
 
 class Record:
@@ -22,13 +21,14 @@ class Record:
     def print(self):
         x, y = pg.position()
         photo = pg.screenshot(region=(x-3, y-3, 6, 6))
-        path = f"{FOLDER_NAME}/flag_{self.count}.png"
+        path = f"{constants.FOLDER_NAME}/flag_{self.count}.png"
         photo.save(path)
         self.count +=1
         infos = {
             "path" : path,
             "down_hole" : 0,
             "up_hole" : 0,
+            "up_hole_path": "",
             "wait" : 10
         }
         self.coordinates.append(infos)
@@ -39,7 +39,7 @@ class Record:
     
     def key_code(self, key):
         if key == keyboard.Key.esc:
-            with open(f"{FOLDER_NAME}/infos.json", "w") as file:
+            with open(f"{constants.FOLDER_NAME}/infos.json", "w") as file:
                 file.write(json.dumps(self.coordinates))
             return False
         elif key == keyboard.Key.insert:

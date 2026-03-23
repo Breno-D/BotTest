@@ -1,48 +1,42 @@
 import pyautogui as pg
-import time
-import keyboard
+import json
+from pynput.keyboard import Listener
+from pynput import keyboard
+import threading
+
+import constants
+import actions
+import my_thread
 
 pg.useImageNotFoundException()
-REGION_BATTLE = (1193, 413, 172, 55)
-REGION_LOOT = (499, 231, 138, 137)
 
-POSITION_MANA = (600, 32)
-COLOR_MANA = (0, 63, 140)
-
-POSITION_LIFE = (190, 33)
-COLOR_LIFE_SAFE = (109, 157, 4)
-# COLOR_LIFE_DANGER =
-# COLOR_LIFE_CRITICAL =
 
 
 # desabilita UI tibia, para fins de claridade visual do bot
 # pg.hotkey('ctrl', 'n')
 
-def check_battle():
-    return pg.locateOnScreen("imgs/region_battle.PNG", region=REGION_BATTLE)
-
 def kill_monsters():
-    while True:
-        # wait 0.5s
-        get_loot()
-        print("ta no whi le de kirk monsters")
-        keyboard.wait("h")
-        try:
-            battle = check_battle()
-            print(battle)
-        except pg.ImageNotFoundException:
-            pg.press("space")
-            while True:
-                try:
-                    pg.locateOnScreen("imgs/red_target.PNG", confidence=0.95, region=REGION_BATTLE)
-                    print("esperando o monstro morrer")
-                except pg.ImageNotFoundException:
-                    print("paro de ataca zé")
-                    break
+    get_loot()
+    try:
+        battle = actions.check_battle()
+        return
+    except pg.ImageNotFoundException:
+        pg.press("space")
+        if event_th.is_set():
+            return
+        while True:
+            try:
+                pg.locateOnScreen("imgs/red_target.PNG", confidence=0.95, region=constants.REGION_BATTLE)
+                if event_th.is_set():
+                    return
+                print("waiting for monster to die")
+            except pg.ImageNotFoundException:
+                print("monster dead")
+                return kill_monsters()
 
 
 def get_loot_old():
-    loot = pg.locateAllOnScreen("imgs/dead_monster.PNG", confidence=0.9, region=REGION_LOOT)
+    loot = pg.locateAllOnScreen("imgs/dead_monster.PNG", confidence=0.9, region=constants.REGION_LOOT)
     for box in loot:
         x, y = pg.center(box)
         pg.moveTo(x, y)
@@ -51,41 +45,63 @@ def get_loot_old():
 def get_loot():
     pg.hotkey('alt', 'q')
 
+def go_to_flag(path, wait):
+    flag = pg.locateOnScreen(path, confidence=0.8, region=constants.REGION_MAP)
+    x,y = pg.center(flag)
+    pg.moveTo(x,y)
+    pg.click()
+    pg.sleep(wait)
 
-def check_status(delay, mousePosX, mousePosY, colorToMatch, buttonToPress):
-    pg.sleep(delay)
-    if(pg.pixelMatchesColor(mousePosX, mousePosY, colorToMatch)):
-        pg.press(buttonToPress)
-        print("match")
-    else:
-        print("no match")
-
-def eat_food():
-    pg.press("F6")
-    print("comendo food...")
-
-def hole_down():
+def check_player_position():
     try:
-        hole = pg.locateOnScreen("imgs/holeImg.PNG", confidence=0.8) # trocar imagem de buraco depois
-        x, y = pg.center(hole)
-        pg.moveTo(x, y)
-        pg.click()
-        pg.sleep(5)
+        box = pg.locateOnScreen("imgs/playerinmap.png", confidence=0.8, region=constants.REGION_MAP)
+        return True
     except pg.ImageNotFoundException:
-        print("buraco não encontrado")
+        return False
 
-def hole_up(img_anchor, plusx, plusy):
-    try:
-        anchorToUp = pg.locateOnScreen(img_anchor, confidence=0.8)
-        x,y = pg.center(anchorToUp)
-        pg.moveTo(x + plusx, y + plusy)
-        pg.press("F11")
-        pg.click()
-    except pg.ImageNotFoundException:
-        print("ancora não encontrada")
 
-keyboard.wait('h')
-hole_up("imgs/anchorTest.PNG", 65, 65)
+def run():  
+    with open(f"{constants.FOLDER_NAME}/infos.json", "r") as file:
+        data = json.loads(file.read())
+    while not event_th.is_set()
+        for item in data:
+            if event_th.is_set():
+                return
+            kill_monsters()
+            if event_th.is_set():
+                return
+            go_to_flag(item['path'], item['wait'])
+            if check_player_position():
+                kill_monsters()
+                if event_th.is_set():
+                    return
+                go_to_flag(item['path'], item['wait'])
+            actions.eat_food()
+            actions.hole_down(item['down_hole'])
+            actions.hole_up(item['up_hole'], item['up_hole_path'], 0, 0)
+
+def key_code(key, th_group):
+    if key == keyboard.Key.esc:
+        event_th.set()
+        th_group.stop()
+        return False
+    if key == keyboard.Key.delete:
+        th_run.start()
+        th_group.start()
+
+global event_th
+event_th = threading.Event()
+th_run = threading.Thread(target=run)
+
+th_full_mana = my_thread.MyThread(lambda: actions.check_status(5, *constants.POSITION_MANA, constants.COLOR_MANA, "F4"))
+th_life_down = my_thread.MyThread(lambda: actions.check_status(2, *constants.POSITION_LIFE, constants.COLOR_LIFE_SAFE, "F3"))
+
+group_thread = my_thread.ThreadGroup([th_full_mana, th_life_down])
+
+
+with Listener(on_press = lambda key: key_code(key, group_thread)) as listener:
+    listener.join()
+# hole_up("imgs/anchorTest.PNG", 65, 65)
 
 
 
