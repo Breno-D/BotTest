@@ -29,7 +29,9 @@ class Record:
             "down_hole" : 0,
             "up_hole" : 0,
             "up_hole_path": "",
-            "wait" : 10
+            "wait" : 10,
+            "plusx": 0,
+            "plusy": 0
         }
         self.coordinates.append(infos)
 

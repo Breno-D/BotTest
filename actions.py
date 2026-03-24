@@ -5,10 +5,10 @@ def eat_food():
     pg.press("F6")
     print("comendo food...")
 
-def hole_down(should_down):
+def hole_down(should_down, imgPath):
     if(should_down):
         try:
-            hole = pg.locateOnScreen("imgs/holeImg.PNG", confidence=0.8) # trocar imagem de buraco depois
+            hole = pg.locateOnScreen(imgPath, confidence=0.8) # trocar imagem de buraco depois
             x, y = pg.center(hole)
             pg.moveTo(x, y)
             pg.click()

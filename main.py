@@ -63,7 +63,7 @@ def check_player_position():
 def run():  
     with open(f"{constants.FOLDER_NAME}/infos.json", "r") as file:
         data = json.loads(file.read())
-    while not event_th.is_set()
+    while not event_th.is_set():
         for item in data:
             if event_th.is_set():
                 return
@@ -77,8 +77,9 @@ def run():
                     return
                 go_to_flag(item['path'], item['wait'])
             actions.eat_food()
-            actions.hole_down(item['down_hole'])
-            actions.hole_up(item['up_hole'], item['up_hole_path'], 0, 0)
+            kill_monsters()
+            actions.hole_down(item['down_hole'], item['up_hole_path'])
+            actions.hole_up(item['up_hole'], item['up_hole_path'], item['plusx'], item['plusy'])
 
 def key_code(key, th_group):
     if key == keyboard.Key.esc:
@@ -86,8 +87,10 @@ def key_code(key, th_group):
         th_group.stop()
         return False
     if key == keyboard.Key.delete:
-        th_run.start()
         th_group.start()
+        th_run.start()
+    if key == keyboard.Key.home:
+        actions.hole_up(1,"SWAMP_VENORE/up_anchor.png", 130, 130)
 
 global event_th
 event_th = threading.Event()
@@ -101,7 +104,7 @@ group_thread = my_thread.ThreadGroup([th_full_mana, th_life_down])
 
 with Listener(on_press = lambda key: key_code(key, group_thread)) as listener:
     listener.join()
-# hole_up("imgs/anchorTest.PNG", 65, 65)
+
 
 
 

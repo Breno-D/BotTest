@@ -1,0 +1,8 @@
+[{"path": "SWAMP_VENORE/flag_0.png", "down_hole": 0, "up_hole": 0, "up_hole_path": "", "wait": 8, "plusx": 0, "plusy": 0}, 
+{"path": "SWAMP_VENORE/flag_1.png", "down_hole": 1, "up_hole": 0, "up_hole_path": "SWAMP_VENORE/down_hole.png", "wait": 17, "plusx": 0, "plusy": 0}, 
+{"path": "SWAMP_VENORE/flag_2.png", "down_hole": 0, "up_hole": 0, "up_hole_path": "", "wait": 4, "plusx": 0, "plusy": 0}, 
+{"path": "SWAMP_VENORE/flag_3.png", "down_hole": 0, "up_hole": 0, "up_hole_path": "", "wait": 15, "plusx": 0, "plusy": 0}, 
+{"path": "SWAMP_VENORE/flag_4.png", "down_hole": 0, "up_hole": 0, "up_hole_path": "", "wait": 18, "plusx": 0, "plusy": 0},
+ {"path": "SWAMP_VENORE/flag_5.png", "down_hole": 0, "up_hole": 0, "up_hole_path": "", "wait": 10, "plusx": 0, "plusy": 0},
+  {"path": "SWAMP_VENORE/flag_6.png", "down_hole": 0, "up_hole": 0, "up_hole_path": "", "wait": 13, "plusx": 0, "plusy": 0},
+  {"path": "SWAMP_VENORE/flag_7.png", "down_hole": 0, "up_hole": 1, "up_hole_path": "SWAMP_VENORE/up_anchor.png", "wait": 16, "plusx": 130, "plusy": 130}]
